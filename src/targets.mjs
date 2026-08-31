@@ -1,5 +1,6 @@
 export function parseTargets(value) {
   if (!Array.isArray(value)) throw new TypeError("targets must be an array");
+  const targetIndexesByUrl = new Map();
   return value.map((entry, index) => {
     if (!entry || typeof entry !== "object" || Array.isArray(entry)) {
       throw new TypeError(`target ${index} must be an object`);
@@ -16,6 +17,12 @@ export function parseTargets(value) {
     if (parsed.username || parsed.password) {
       throw new TypeError(`target ${index} url must not contain credentials`);
     }
-    return { name, url: parsed.href };
+    const url = parsed.href;
+    const originalIndex = targetIndexesByUrl.get(url);
+    if (originalIndex !== undefined) {
+      throw new TypeError(`target ${index} url duplicates target ${originalIndex} url`);
+    }
+    targetIndexesByUrl.set(url, index);
+    return { name, url };
   });
 }
