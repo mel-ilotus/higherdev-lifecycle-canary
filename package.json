@@ -1,0 +1,14 @@
+{
+  "name": "higherdev-canary",
+  "version": "1.0.0",
+  "private": false,
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "lint": "node --check src/targets.mjs && node --check src/results.mjs && node --check scripts/build.mjs",
+    "test": "node --test",
+    "build": "node scripts/build.mjs"
+  }
+}
